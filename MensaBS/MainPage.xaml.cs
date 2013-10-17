@@ -13,6 +13,7 @@ using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
+using System.IO.IsolatedStorage;
 
 namespace MensaBS
 {
@@ -48,7 +49,31 @@ namespace MensaBS
             DateTime now = DateTime.Now;
             mainGuiThingie.SelectedIndex = (int)now.DayOfWeek;
 
-            load_kath(null,null);
+            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            if (!settings.Contains("mensa"))
+            {
+                settings.Add("mensa",0);
+            }
+
+            switch ( (int)settings["mensa"] )
+            {
+                case 0:
+                    load_kath(null, null);
+                    break;
+                case 1:
+                    load_360(null, null);
+                    break;
+                case 2:
+                    load_bh(null, null);
+                    break;
+                case 3:
+                    load_hbk(null, null);
+                    break;
+                default:
+                    load_kath(null, null);
+                    settings["mensa"] = 0;
+                    break;
+            }
         }
 
         private void load_data(string mensa)
@@ -226,29 +251,40 @@ namespace MensaBS
                     MessageBoxIcon.Alert, null, null);
         }
 
-        private void load_hbk(object sender, EventArgs e)
-        {
-            mainGuiThingie.Title = "MensaBS - HBK";
-            load_data("hbk");
-        }
 
         private void load_kath(object sender, EventArgs e)
         {
             mainGuiThingie.Title = "MensaBS - Katharinenstraße";
+            IsolatedStorageSettings.ApplicationSettings["mensa"] = 0;
             load_data("kath");
         }
 
         private void load_360(object sender, EventArgs e)
         {
             mainGuiThingie.Title = "MensaBS - 360°";
+            IsolatedStorageSettings.ApplicationSettings["mensa"] = 1;
             load_data("360");
         }
 
         private void load_bh(object sender, EventArgs e)
         {
             mainGuiThingie.Title = "MensaBS - Beethovenstraße";
+            IsolatedStorageSettings.ApplicationSettings["mensa"] = 2;
             load_data("beeth");
         }
+
+        private void load_hbk(object sender, EventArgs e)
+        {
+            mainGuiThingie.Title = "MensaBS - HBK";
+            IsolatedStorageSettings.ApplicationSettings["mensa"] = 3;
+            load_data("hbk");
+        }
+
+      
+
+       
+
+        
 
 
 
