@@ -155,7 +155,7 @@ namespace MensaBS
                     return;
                 }
             }
-            catch (Exception exp)
+            catch (Exception )
             {
                 MessageBox.Show("There was an error downloading food!");
                 return;
