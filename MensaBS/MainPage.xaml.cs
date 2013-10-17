@@ -22,8 +22,7 @@ namespace MensaBS
 
         Int16 load;
 
-        Int16 row;
-
+       
         // Constructor
         public MainPage()
         {
@@ -239,16 +238,6 @@ namespace MensaBS
                 title.FontWeight = System.Windows.FontWeights.Bold;
                 target.Children.Add(title);
             }
-        }
-
-        private void MensaButton_Click(object sender, RoutedEventArgs e)
-        {
-            List<string> MBOPTIONS = new List<string>();
-            MBOPTIONS.Add("OK");
-            string msg = "Text that was typed on the keyboard will be displayed here.\nClick OK to continue...";
-            Guide.BeginShowMessageBox(
-                    "title", msg, MBOPTIONS, 0,
-                    MessageBoxIcon.Alert, null, null);
         }
 
 
