@@ -44,33 +44,33 @@
 
                 <phone:PivotItem CacheMode="{x:Null}" Header="Montag">
                 <ScrollViewer  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
-                  <StackPanel x:Name="MoStack"  />
+                    <StackPanel x:Name="MoStack" Height="Auto"  VerticalAlignment="Stretch"   HorizontalAlignment="Stretch" />
                 </ScrollViewer>
             </phone:PivotItem>
 
             
             <phone:PivotItem CacheMode="{x:Null}" Header="Dienstag">
                 <ScrollViewer Height="Auto"  VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                    <StackPanel x:Name="DiStack" Height="Auto"  VerticalAlignment="Stretch"   HorizontalAlignment="Left" />
+                    <StackPanel x:Name="DiStack" Height="Auto"  VerticalAlignment="Stretch"   HorizontalAlignment="Stretch" />
                 </ScrollViewer>
             </phone:PivotItem>
 
 
             <phone:PivotItem CacheMode="{x:Null}" Header="Mittwoch">
                 <ScrollViewer Height="Auto"  VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                    <StackPanel x:Name="MiStack" Height="Auto"  VerticalAlignment="Stretch"   HorizontalAlignment="Left" />
+                    <StackPanel x:Name="MiStack" Height="Auto"  VerticalAlignment="Stretch"   HorizontalAlignment="Stretch" />
                 </ScrollViewer>
             </phone:PivotItem>
 
             <phone:PivotItem CacheMode="{x:Null}" Header="Donnserstag">
                 <ScrollViewer Height="Auto"  VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                    <StackPanel x:Name="DoStack"  Height="Auto"  VerticalAlignment="Stretch"   HorizontalAlignment="Left"  />
+                    <StackPanel x:Name="DoStack"  Height="Auto"  VerticalAlignment="Stretch"   HorizontalAlignment="Stretch"  />
                 </ScrollViewer>
             </phone:PivotItem>
 
             <phone:PivotItem CacheMode="{x:Null}" Header="Freitag">
                 <ScrollViewer Height="Auto"  VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                    <StackPanel x:Name="FriStack" Height="Auto"  VerticalAlignment="Stretch"   HorizontalAlignment="Left"  />
+                    <StackPanel x:Name="FriStack" Height="Auto"  VerticalAlignment="Stretch"   HorizontalAlignment="Stretch"  />
                 </ScrollViewer>
             </phone:PivotItem>
 
