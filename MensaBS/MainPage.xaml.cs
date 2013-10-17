@@ -45,6 +45,13 @@ namespace MensaBS
 
         private void appReady(object src, RoutedEventArgs e)
         {
+            DateTime now = DateTime.Now;
+/*            switch (now.DayOfWeek)
+            {
+                case 0: mainGuiThingie.SelectedIndex = 0;
+            }*/
+            mainGuiThingie.SelectedIndex = (int)now.DayOfWeek;
+
             load_kath(null,null);
         }
 
