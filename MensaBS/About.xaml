@@ -46,7 +46,7 @@
 
     <phone:PhoneApplicationPage.ApplicationBar >
         <shell:ApplicationBar  IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/back.png" Text="About" Click="Back_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Images/back.png" Text="Back" Click="Back_Click" />
             </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
