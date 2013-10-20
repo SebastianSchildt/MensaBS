@@ -269,6 +269,11 @@ namespace MensaBS
             load_data("hbk");
         }
 
+        private void About_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/About.xaml", UriKind.Relative));
+        }
+
       
 
        
