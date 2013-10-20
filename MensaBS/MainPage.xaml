@@ -94,6 +94,7 @@
 
     <phone:PhoneApplicationPage.ApplicationBar >
         <shell:ApplicationBar Mode="Minimized" IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/skull.png" Text="Zusätze" Click="Adds_Click" />
             <shell:ApplicationBarIconButton IconUri="/Images/questionmark.png" Text="About" Click="About_Click" />
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Click="load_kath" Text="Katharinenstraße"/>

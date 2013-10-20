@@ -274,6 +274,11 @@ namespace MensaBS
             NavigationService.Navigate(new Uri("/About.xaml", UriKind.Relative));
         }
 
+        private void Adds_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/ZusatzPage.xaml", UriKind.Relative));
+        }
+
       
 
        
