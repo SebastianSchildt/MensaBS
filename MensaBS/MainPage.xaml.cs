@@ -46,7 +46,7 @@ namespace MensaBS
         private void appReady(object src, RoutedEventArgs e)
         {
             DateTime now = DateTime.Now;
-            mainGuiThingie.SelectedIndex = (int)now.DayOfWeek;
+            mainGuiThingie.SelectedIndex = ((int)now.DayOfWeek-1)%7;
 
             IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
             if (!settings.Contains("mensa"))
