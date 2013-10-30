@@ -22,6 +22,8 @@ namespace MensaBS
 
         Int16 load;
 
+        bool DLerror; 
+
        
         // Constructor
         public MainPage()
@@ -29,7 +31,7 @@ namespace MensaBS
             InitializeComponent();
             if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
             {
-                MessageBox.Show("No network connection available!");
+                MessageBox.Show("No network connection!");
                 return;
             }
 
@@ -81,6 +83,7 @@ namespace MensaBS
         private void load_data(string mensa)
         {
             load = 6;
+            DLerror = false;
             SystemTray.IsVisible = true;
             SystemTray.ProgressIndicator = new ProgressIndicator();
             SystemTray.ProgressIndicator.IsIndeterminate = true;
@@ -154,13 +157,21 @@ namespace MensaBS
             {
                 if (e.Result == null || e.Error != null)
                 {
-                    MessageBox.Show("There was an error downloading the XML-file!");
+                    if (!DLerror)
+                    {
+                        MessageBox.Show("There was an error downloading the XML-file!");
+                        DLerror = true;
+                    }
                     return;
                 }
             }
             catch (Exception )
             {
-                MessageBox.Show("There was an error downloading food!");
+                if (!DLerror)
+                {
+                    MessageBox.Show("There was an error downloading food!");
+                    DLerror = true;
+                }
                 return;
             }
 
