@@ -21,7 +21,14 @@ namespace MensaBS
 
         Int16 load;
 
-        bool DLerror; 
+        private bool DLerror;
+
+        private dataDay monday=new dataDay();
+        private dataDay tuesday = new dataDay();
+        private dataDay wednesday = new dataDay();
+        private dataDay thursday = new dataDay();
+        private dataDay friday = new dataDay();
+        private dataDay saturday = new dataDay();
 
        
         // Constructor
@@ -92,7 +99,7 @@ namespace MensaBS
             Uri uri = new Uri("http://trivalg.de/mensa/"+mensa+"/mo.xml", UriKind.Absolute);
             downloader.DownloadStringCompleted += (sender, eventArgs) =>
             {
-                downloadFinished(sender, eventArgs, MoStack);
+                downloadFinished(sender, eventArgs, monday);
             };
             downloader.DownloadStringAsync(uri);
 
@@ -100,7 +107,7 @@ namespace MensaBS
             downloader = new WebClient();
             downloader.DownloadStringCompleted += (sender, eventArgs) =>
             {
-                downloadFinished(sender, eventArgs, DiStack);
+                downloadFinished(sender, eventArgs, tuesday);
             };
             downloader.DownloadStringAsync(uri);
 
@@ -109,7 +116,7 @@ namespace MensaBS
             downloader = new WebClient();
             downloader.DownloadStringCompleted += (sender, eventArgs) =>
             {
-                downloadFinished(sender, eventArgs, MiStack);
+                downloadFinished(sender, eventArgs, wednesday);
             };
             downloader.DownloadStringAsync(uri);
 
@@ -119,7 +126,7 @@ namespace MensaBS
             downloader = new WebClient();
             downloader.DownloadStringCompleted += (sender, eventArgs) =>
             {
-                downloadFinished(sender, eventArgs, DoStack);
+                downloadFinished(sender, eventArgs, thursday);
             };
             downloader.DownloadStringAsync(uri);
 
@@ -129,7 +136,7 @@ namespace MensaBS
             downloader = new WebClient();
             downloader.DownloadStringCompleted += (sender, eventArgs) =>
             {
-                downloadFinished(sender, eventArgs, FriStack);
+                downloadFinished(sender, eventArgs, friday);
             };
             downloader.DownloadStringAsync(uri);
 
@@ -138,13 +145,13 @@ namespace MensaBS
             downloader = new WebClient();
             downloader.DownloadStringCompleted += (sender, eventArgs) =>
             {
-                downloadFinished(sender, eventArgs, SatStack);
+                downloadFinished(sender, eventArgs, saturday);
             };
             downloader.DownloadStringAsync(uri);
         }
 
 
-        private void downloadFinished(object sender, DownloadStringCompletedEventArgs e, StackPanel day)
+        private void downloadFinished(object sender, DownloadStringCompletedEventArgs e, dataDay day)
         {
             this.load--;
             if (load == 0)
@@ -174,14 +181,63 @@ namespace MensaBS
                 return;
             }
 
+            
+            StackPanel sp=SatStack;
+            if (day == monday)
+                sp = MoStack;
+            else if (day == tuesday)
+                sp = DiStack;
+            else if (day == wednesday)
+                sp = MiStack;
+            else if (day == thursday)
+                sp = DoStack;
+            else if (day == friday)
+                sp = FriStack;
 
-            // Deserialize if download succeeds
-            XmlSerializer serializer = new XmlSerializer(typeof(TrivalgFeed));
-            XDocument document = XDocument.Parse(e.Result);
-            // get all the employees
-            TrivalgFeed feed = (TrivalgFeed)serializer.Deserialize(document.CreateReader());
+                      
+            sp.Children.Clear();
 
-            day.Children.Clear();
+
+            try
+            {
+                XDocument document = XDocument.Parse(e.Result);
+                day.parse(document);
+            }
+            catch (Exception parserEx)
+            {
+                TextBlock err = new TextBlock();
+                err.Text = "Yikes! I just heard this creaking noise and then a loud bang. I think something just exploded :-( Smells funny too....";
+                err.TextWrapping = System.Windows.TextWrapping.Wrap;
+                err.FontSize = (Double)Application.Current.Resources["PhoneFontSizeLarge"];
+                err.FontWeight = System.Windows.FontWeights.Bold;
+
+                TextBlock descr = new TextBlock();
+                descr.Text = parserEx.Message+"\nThis may be a problem with the datasource. You can try the oldschool way using your browser:" ;
+                descr.TextWrapping = System.Windows.TextWrapping.Wrap;
+
+                HyperlinkButton mensaLink = new HyperlinkButton();
+                mensaLink.TargetName = "_blank";
+                mensaLink.NavigateUri = (new Uri("http://www.stw-on.de/braunschweig/essen"));
+                mensaLink.Content = "Mensaplan online";
+                mensaLink.Margin = new Thickness(0,10,0,10);
+
+                TextBlock toGithub = new TextBlock();
+                toGithub.Text = "If you think this is a bug in MensaBS you can report the issue here:";
+                toGithub.TextWrapping = System.Windows.TextWrapping.Wrap;
+
+                HyperlinkButton githubLink = new HyperlinkButton();
+                githubLink.TargetName = "_blank";
+                githubLink.NavigateUri = (new Uri("https://github.com/SebastianSchildt/MensaBS/issues"));
+                githubLink.Content = "Issue Tracker";
+                githubLink.Margin = new Thickness(0, 10, 0, 10);
+                
+                sp.Children.Add(err);
+                sp.Children.Add(descr);
+                sp.Children.Add(mensaLink);
+                sp.Children.Add(toGithub); sp.Children.Add(githubLink);
+                return;
+            }
+
 
             //Luch header
             Border headerPanel = new Border();
@@ -192,10 +248,10 @@ namespace MensaBS
             header.Margin = new Thickness(5);
             header.Text = "Mittag";
             headerPanel.Child=header;
-            day.Children.Add(headerPanel);
+            sp.Children.Add(headerPanel);
 
 
-            addMeals(feed.tag.lunch.meals, day);
+            addMeals(day.lunch, sp);
 
             //Dinner header
             headerPanel = new Border();
@@ -206,20 +262,15 @@ namespace MensaBS
             header.Margin = new Thickness(5);
             header.Text = "Abendessen";
             headerPanel.Child = header;
-            day.Children.Add(headerPanel);
+            sp.Children.Add(headerPanel);
 
-            addMeals(feed.tag.dinner.meals, day);
-
-          
-            // bind data to ListBox
-            //                employeesList.ItemsSource = employees.Collection;
-
+            addMeals(day.dinner, sp);
         }
 
-        private void addMeals(ObservableCollection<Meal> meals, StackPanel target)
+        private void addMeals(List<dataMeal> meals, StackPanel target)
         {
 
-            foreach (Meal m in meals)
+            foreach (dataMeal m in meals)
             {
                 TextBlock title = new TextBlock();
                 title.Text = m.name;
@@ -231,10 +282,7 @@ namespace MensaBS
                 descr.Text = "Zusatz: " + m.poison;
 
                 TextBlock price = new TextBlock();
-                foreach (Meal.price p in m.prices)
-                {
-                    price.Text += p.type + ": " + p.amount + "  ";
-                }
+                price.Text = "Preis: " + m.priceStudent + " / " + m.priceEmployee + " / " + m.priceGuest;
 
                 target.Children.Add(title);
                 target.Children.Add(descr);
